@@ -8,7 +8,9 @@
             <li>
                 <a href="{{ route($link['route_name']) }}"
                     class="d-flex gap-2 nav-link position-relative
-                    @if (explode('.', Route::currentRouteName())[1] == explode('.', $link['route_name'])[1]) active @endif">
+                    @if (isset(explode('.', Route::currentRouteName())[1]) &&
+                            explode('.', Route::currentRouteName())[1] == explode('.', $link['route_name'])[1]
+                    ) active @endif">
                     <div class="flex-shrink-0">
                         {!! $link['menu_icon'] !!}
                     </div>
