@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('body');
             $table->tinyInteger('reading_time')->unsigned(); // Reading time in minutes
             $table->boolean('is_archived')->default(false);
+            $table->string('img_path')->nullable();
+            $table->string('img_original_name')->nullable();
             $table->timestamps();
         });
     }

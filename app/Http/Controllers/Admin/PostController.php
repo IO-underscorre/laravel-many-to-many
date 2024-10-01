@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\PostRequest;
 use App\Models\PostType;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -42,6 +43,11 @@ class PostController extends Controller
 
         $data['slug'] = Helper::generateSlug($data['title'], Post::class);
         $data['reading_time'] = Helper::getReadingTime($data['body']);
+
+        if ($request->hasFile('img_path')) {
+            $data['img_path'] = Storage::put('uploads', $data['img_path']);
+            $data['img_original_name'] = $request->file('img_path')->getClientOriginalName();
+        }
 
         $new_post = Post::create($data);
 
@@ -92,6 +98,20 @@ class PostController extends Controller
 
         $data['slug'] = Helper::generateSlug($data['title'], Post::class);
         $data['reading_time'] = Helper::getReadingTime($data['body']);
+
+        if ($request->hasFile('img_path') || $request->input('img_delete')) {
+            if ($post->img_path) {
+                Storage::delete($post->img_path);
+            }
+
+            if ($request->hasFile('img_path')) {
+                $data['img_path'] = Storage::put('uploads', $data['img_path']);
+                $data['img_original_name'] = $request->file('img_path')->getClientOriginalName();
+            } else {
+                $data['img_path'] = null;
+                $data['img_original_name'] = null;
+            }
+        }
 
         $post->update($data);
 

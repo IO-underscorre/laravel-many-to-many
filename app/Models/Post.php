@@ -16,6 +16,8 @@ class Post extends Model
         'reading_time',
         'is_archived',
         'post_type_id',
+        'img_path',
+        'img_original_name',
     ];
 
     public function postType()

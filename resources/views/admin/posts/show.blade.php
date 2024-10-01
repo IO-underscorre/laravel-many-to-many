@@ -91,6 +91,22 @@
                 </li>
 
                 <li class="list-group-item">
+                    <strong class="d-block ms-3 text-primary">
+                        Image:
+                    </strong>
+
+                    @if ($post->img_path)
+                        <div>
+                            <img class="w-100" src="{{ asset('storage/' . $post->img_path) }}" alt="{{ $post->title }}">
+                        </div>
+                    @else
+                        <span class="fs-4">
+                            None
+                        </span>
+                    @endif
+                </li>
+
+                <li class="list-group-item">
                     <menu class="d-flex justify-content-center gap-1">
                         <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">
                             <i class="fa-solid fa-eye-slash"></i>

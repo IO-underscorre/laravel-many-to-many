@@ -28,6 +28,7 @@ class PostRequest extends FormRequest
             'post_type_id' => 'nullable|exists:post_types,id',
             'tags' => 'nullable|array',
             'tags.*' => 'exists:tags,id',
+            'img_path' => 'nullable|image',
         ];
     }
 

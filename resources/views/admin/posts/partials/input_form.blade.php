@@ -3,7 +3,7 @@
 @endphp
 
 
-<form action="{{ $action }}" method="POST" class="row g-2">
+<form action="{{ $action }}" method="POST" enctype="multipart/form-data" class="row g-2">
     @csrf
 
     @if ($is_update_form)
@@ -58,6 +58,7 @@
                 </option>
             @endforeach
         </select>
+
         @error('post_type_id')
             <small id="input-type-error" class="invalid-feedback position-absolute bottom-0 start-0">
                 {{ $message }}
@@ -71,8 +72,8 @@
         </label>
 
         <div class="dropdown">
-            <button class="form-control text-start" type="button" id="input-tags" data-bs-toggle="dropdown"
-                aria-expanded="false">
+            <button class="form-control text-start @error('tags') is-invalid @enderror" type="button" id="input-tags"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 None
             </button>
 
@@ -89,6 +90,7 @@
                 @endforeach
             </ul>
         </div>
+
         @error('tags')
             <small id="input-type-error" class="invalid-feedback position-absolute bottom-0 start-0">
                 {{ $message }}
@@ -108,6 +110,7 @@
 
                 <option value="1" @selected(old('is_archived', $is_update_form ? boolval($item_to_update->is_archived) : false))>Archived</option>
             </select>
+
             @error('is_archived')
                 <small id="input-archived-status-error" class="invalid-feedback position-absolute bottom-0 start-0">
                     {{ $message }}
@@ -115,6 +118,34 @@
             @enderror
         </div>
     @endif
+
+    <div class="col-12 position-relative pb-4">
+        <label for="input-image" class="form-label text-primary">
+            Image
+        </label>
+
+        <div class="input-group">
+            <input type="file" class="form-control @error('img_path') is-invalid @enderror" id="input-image"
+                name="img_path" aria-errormessage="input-image-error">
+
+            @if ($is_update_form)
+                <div class="input-group-text">
+                    @if ($item_to_update->img_path)
+                        <input class="form-check-input mt-0 me-2" type="checkbox" name="img_delete" id="delete-image">
+                        <label for="delete-image">Delete current image</label>
+                    @else
+                        No current image
+                    @endif
+                </div>
+            @endif
+        </div>
+
+        @error('img_path')
+            <small id="input-image-error" class="invalid-feedback position-absolute bottom-0 start-0">
+                {{ $message }}
+            </small>
+        @enderror
+    </div>
 
     <div class="col-12 text-center">
         <button class="btn btn-primary" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
