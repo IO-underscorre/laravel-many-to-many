@@ -56,7 +56,7 @@
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
                                             id="input-name" name="name" aria-errormessage="input-name-error"
                                             value="{!! old('name', '') !!}" minlength="3" maxlength="55"
-                                            placeholder="Title..." required>
+                                            placeholder="Name..." required>
 
                                         @error('name')
                                             <small id="input-name-error"
