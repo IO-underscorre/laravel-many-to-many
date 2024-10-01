@@ -42,12 +42,12 @@
     </div>
 
     <div class="col-12 position-relative pb-4">
-        <label for="input-archived-status" class="form-label text-primary">
+        <label for="input-type" class="form-label text-primary">
             Type
         </label>
 
-        <select class="form-control @error('post_type_id') is-invalid @enderror" id="input-archived-status"
-            name="post_type_id" aria-errormessage="input-archived-status-error">
+        <select class="form-control @error('post_type_id') is-invalid @enderror" id="input-type" name="post_type_id"
+            aria-errormessage="input-type-error">
             <option value="" @selected(old('post_type_id', $is_update_form ? $item_to_update->post_type_id : null) == null)>
                 None
             </option>
@@ -59,7 +59,7 @@
             @endforeach
         </select>
         @error('post_type_id')
-            <small id="input-archived-status-error" class="invalid-feedback position-absolute bottom-0 start-0">
+            <small id="input-type-error" class="invalid-feedback position-absolute bottom-0 start-0">
                 {{ $message }}
             </small>
         @enderror
@@ -82,14 +82,14 @@
                         <label class="dropdown-item" for="tag-{!! $tag->slug !!}">
                             <input type="checkbox" name="tags[]" value="{!! $tag->id !!}"
                                 id="tag-{!! $tag->slug !!}" data-name="{!! $tag->name !!}"
-                                @checked(old('tag', $is_update_form ? $item_to_update->tags : [])->contains($tag->id))>
+                                @checked(in_array($tag->id, old('tags', $is_update_form ? $item_to_update->tags->pluck('id')->toArray() : [])))>
                             {{ $tag->name }}
                         </label>
                     </li>
                 @endforeach
             </ul>
         </div>
-        @error('is_archived')
+        @error('tags')
             <small id="input-type-error" class="invalid-feedback position-absolute bottom-0 start-0">
                 {{ $message }}
             </small>
@@ -98,18 +98,18 @@
 
     @if ($is_update_form)
         <div class="col-12 position-relative pb-4">
-            <label for="input-type" class="form-label text-primary">
+            <label for="input-archived-status" class="form-label text-primary">
                 Status
             </label>
 
-            <select class="form-control @error('is_archived') is-invalid @enderror" id="input-type" name="is_archived"
-                aria-errormessage="input-type-error" required>
+            <select class="form-control @error('is_archived') is-invalid @enderror" id="input-archived-status"
+                name="is_archived" aria-errormessage="input-archived-status-error" required>
                 <option value="0" @selected(!old('is_archived', $is_update_form ? boolval($item_to_update->is_archived) : false))>Not archived</option>
 
                 <option value="1" @selected(old('is_archived', $is_update_form ? boolval($item_to_update->is_archived) : false))>Archived</option>
             </select>
             @error('is_archived')
-                <small id="input-type-error" class="invalid-feedback position-absolute bottom-0 start-0">
+                <small id="input-archived-status-error" class="invalid-feedback position-absolute bottom-0 start-0">
                     {{ $message }}
                 </small>
             @enderror
