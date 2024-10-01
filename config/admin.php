@@ -18,5 +18,10 @@ return [
             'route_name' => 'admin.post-types.index',
             'menu_icon' => '<i class="fa-solid fa-flag"></i>',
         ],
+        [
+            'menu_text' => 'TAGS',
+            'route_name' => 'admin.tags.index',
+            'menu_icon' => '<i class="fa-solid fa-tags"></i>',
+        ],
     ],
 ];
