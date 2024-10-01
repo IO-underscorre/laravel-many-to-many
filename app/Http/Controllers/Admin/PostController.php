@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostRequest;
 use App\Models\PostType;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -27,8 +28,9 @@ class PostController extends Controller
     public function create()
     {
         $types = PostType::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.create', compact('types'));
+        return view('admin.posts.create', compact('types', 'tags'));
     }
 
     /**
@@ -42,6 +44,10 @@ class PostController extends Controller
         $data['reading_time'] = Helper::getReadingTime($data['body']);
 
         $new_post = Post::create($data);
+
+        if (array_key_exists('tags', $data)) {
+            $new_post->tags()->sync($request->input('tags'));
+        }
 
         return redirect()->route('admin.posts.show', $new_post);
     }
@@ -68,8 +74,9 @@ class PostController extends Controller
         }
 
         $types = PostType::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.edit', compact('post', 'types'));
+        return view('admin.posts.edit', compact('post', 'types', 'tags'));
     }
 
     /**
@@ -87,6 +94,12 @@ class PostController extends Controller
         $data['reading_time'] = Helper::getReadingTime($data['body']);
 
         $post->update($data);
+
+        if (array_key_exists('tags', $data)) {
+            $post->tags()->sync($request->input('tags'));
+        } else {
+            $post->tags()->detach();
+        }
 
         return redirect()->route('admin.posts.show', $post);
     }

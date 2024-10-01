@@ -20,7 +20,9 @@
 
                                 <th scope="col" class="text-primary col-4">Title</th>
 
-                                <th scope="col" class="text-primary col-3">Type</th>
+                                <th scope="col" class="text-primary col-2">Type</th>
+
+                                <th scope="col" class="text-primary col-1">Tags</th>
 
                                 <th scope="col" class="text-primary col-1">Status</th>
 
@@ -34,7 +36,13 @@
 
                                     <td class="col-4 text-start">{{ $post['title'] }}</td>
 
-                                    <td class="col-3">{{ isset($post->postType) ? $post->postType->name : 'None' }}</td>
+                                    <td class="col-2">{{ isset($post->postType) ? $post->postType->name : 'None' }}</td>
+
+                                    <td class="col-1">
+                                        @foreach ($post->tags as $tag)
+                                            <span class="badge text-bg-primary">{!! $tag->name !!}</span>
+                                        @endforeach
+                                    </td>
 
                                     <td class="col-1">{{ $post['is_archived'] ? 'Archived' : 'Active' }}</td>
 

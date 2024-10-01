@@ -26,6 +26,8 @@ class PostRequest extends FormRequest
             'body' => 'required|min:3|max:65535',
             'is_archived' => 'required|boolean',
             'post_type_id' => 'nullable|exists:post_types,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
         ];
     }
 

@@ -46,6 +46,22 @@
 
                 <li class="list-group-item">
                     <strong class="d-block ms-3 text-primary">
+                        Tags:
+                    </strong>
+
+                    <span class="fs-4">
+                        @if ($post->tags->toArray() !== [])
+                            @foreach ($post->tags as $tag)
+                                <span class="badge text-bg-primary">{!! $tag->name !!}</span>
+                            @endforeach
+                        @else
+                            None
+                        @endif
+                    </span>
+                </li>
+
+                <li class="list-group-item">
+                    <strong class="d-block ms-3 text-primary">
                         Body:
                     </strong>
 

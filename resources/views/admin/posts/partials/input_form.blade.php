@@ -71,21 +71,54 @@
         </div>
     </div>
 
+    <div class="col-12">
+        <div class="position-relative pb-4">
+            <label for="input-tags" class="form-label text-primary">
+                Tags
+            </label>
+
+            <div class="dropdown">
+                <button class="form-control text-start" type="button" id="input-tags" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    None
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="input-tags">
+                    @foreach ($tags as $tag)
+                        <li>
+                            <label class="dropdown-item" for="tag-{!! $tag->slug !!}">
+                                <input type="checkbox" name="tags[]" value="{!! $tag->id !!}"
+                                    id="tag-{!! $tag->slug !!}" data-name="{!! $tag->name !!}"
+                                    @checked(old('tag', $is_update_form ? $item_to_update->tags : [])->contains($tag->id))>
+                                {{ $tag->name }}
+                            </label>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+            @error('is_archived')
+                <small id="input-type-error" class="invalid-feedback position-absolute bottom-0 start-0">
+                    {{ $message }}
+                </small>
+            @enderror
+        </div>
+    </div>
+
     @if ($is_update_form)
         <div class="col-12">
             <div class="position-relative pb-4">
-                <label for="input-archived-status" class="form-label text-primary">
+                <label for="input-type" class="form-label text-primary">
                     Status
                 </label>
 
-                <select class="form-control @error('is_archived') is-invalid @enderror" id="input-archived-status"
-                    name="is_archived" aria-errormessage="input-archived-status-error" required>
+                <select class="form-control @error('is_archived') is-invalid @enderror" id="input-type"
+                    name="is_archived" aria-errormessage="input-type-error" required>
                     <option value="0" @selected(!old('is_archived', $is_update_form ? boolval($item_to_update->is_archived) : false))>Not archived</option>
 
                     <option value="1" @selected(old('is_archived', $is_update_form ? boolval($item_to_update->is_archived) : false))>Archived</option>
                 </select>
                 @error('is_archived')
-                    <small id="input-archived-status-error" class="invalid-feedback position-absolute bottom-0 start-0">
+                    <small id="input-type-error" class="invalid-feedback position-absolute bottom-0 start-0">
                         {{ $message }}
                     </small>
                 @enderror
@@ -96,4 +129,39 @@
     <div class="col-12 text-center">
         <button class="btn btn-primary" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
     </div>
+
+    <script>
+        const dropdownButton = document.getElementById('input-tags');
+        const dropdownMenu = document.querySelectorAll('.dropdown-menu input');
+
+        let selectedItems = [];
+
+        for (const checkbox of dropdownMenu) {
+            updateSelectedCheckbox(checkbox);
+            checkbox.addEventListener('change', handleCB);
+        }
+        console.log(selectedItems);
+
+        function handleCB(event) {
+            const checkbox = event.target;
+            updateSelectedCheckbox(checkbox);
+        }
+
+        function updateSelectedCheckbox(checkbox) {
+            const newItem = {
+                name: checkbox.dataset.name,
+                value: checkbox.value,
+            };
+
+            if (checkbox.checked) {
+                selectedItems.push(newItem);
+            } else {
+                selectedItems = selectedItems.filter((item) => item.value !== newItem.value);
+            }
+
+            const selectedItemsNames = selectedItems.map(item => item.name);
+
+            dropdownButton.innerText = selectedItemsNames.length > 0 ? selectedItemsNames.join(' \u{02219} ') : 'None';
+        }
+    </script>
 </form>
